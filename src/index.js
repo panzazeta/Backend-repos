@@ -48,8 +48,10 @@ io.on("connection", (socket) => {
 app.use("/api/products", prodsRouter);
 app.use("/api/carts", cartsRouter);
 app.get("/static", (req, res) => {
-    res.render("home", {
-        nombre: "lucas"
+    res.render("realTimeProducts", {
+        css: "style.css",
+        title: "Real Time Products",
+        js: "realTimeProducts.js"
     }) 
 });    
 // console.log(__dirname + "/public");
