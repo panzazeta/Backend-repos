@@ -24,7 +24,6 @@ const serverExpress = app.listen(PORT, () => {
     console.log(`Server on port ${PORT}`)
 })
 
-
 //Middlewares:
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
@@ -36,13 +35,20 @@ const upload = multer({storage: storage});
 
 //Server Socket.io
 const io = new Server(serverExpress)
+const prods = [];
 
 io.on("connection", (socket) => {
     console.log("Server Socket.io connected");
     socket.on("messageConnection", (info) => {
         console.log(info);
     });
+
+    socket.on('nuevoProducto', (nuevoProd) => {
+        prods.push(nuevoProd);
+        socket.emit('prods', prods);
+    });
 });
+
 
 //Routes:
 app.use("/api/products", prodsRouter);
