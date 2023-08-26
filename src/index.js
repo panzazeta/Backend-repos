@@ -10,7 +10,7 @@ import { Server } from "socket.io";
 
 const app = express();
 const PORT = 8080;
-const products = new ProductManager("./products.txt");
+const productsManager = new ProductManager("./products.txt");
 
 //Config
 const storage = multer.diskStorage({
@@ -33,6 +33,7 @@ app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", path.resolve(__dirname, "./views"));
 app.use("/static", express.static(path.join(__dirname, "/public")));
+app.use('/realtimeproducts', express.static(path.join(__dirname, '/public')));
 const upload = multer({storage: storage});
 
 //Server Socket.io
@@ -41,22 +42,22 @@ const prods = [];
 
 io.on("connection", (socket) => {
     console.log("Server Socket.io connected");
-    socket.on("messageConnection", (info) => {
-        console.log(info);
-    });
 
-    socket.on('nuevoProducto', (nuevoProd) => {
-        prods.push(nuevoProd);
-        socket.emit('prods', prods);
+    socket.on('nuevoProducto', async (nuevoProd) => {
+        const { title, description, price, thumbnail, code, stock } = nuevoProd;
+        productsManager.addProduct(title, description, price, thumbnail, code, stock);
+        const products = await productsManager.getProducts();
+        io.emit('products-data', products);
     });
 });
+
 
 //Routes:
 app.use("/api/products", prodsRouter);
 app.use("/api/carts", cartsRouter);
 
 app.get("/", async (req,res) => {
-    const productList = await products.getProducts();
+    const productList = await productsManager.getProducts();
     res.render("index", {
             css: "index.css",
             title: "Index",
@@ -71,7 +72,6 @@ app.get("/static", (req, res) => {
         js: "realTimeProducts.js"
     }) 
 });
-
 
 
 // console.log(__dirname + "/public");
