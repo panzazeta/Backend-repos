@@ -57,13 +57,17 @@ app.use("/api/carts", cartsRouter);
 
 app.get("/", async (req,res) => {
     const productList = await products.getProducts();
-    res.render("index", { products: productList });
+    res.render("index", {
+            css: "index.css",
+            title: "Index",
+            products: productList
+    });
 });
 
 app.get("/static", (req, res) => {
     res.render("realTimeProducts", {
-        css: "style.css",
-        title: "Real Time Products",
+        css: "static.css",
+        title: "Products",
         js: "realTimeProducts.js"
     }) 
 });

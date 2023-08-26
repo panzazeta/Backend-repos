@@ -1,14 +1,5 @@
 [
   {
-    "title": "producto prueba 2",
-    "description": "Este es un producto prueba 2",
-    "price": 300,
-    "thumbnail": "Sin imagen",
-    "code": "abc123b",
-    "stock": 26,
-    "id": 2
-  },
-  {
     "title": "producto prueba 4",
     "description": "Este es un producto prueba 4",
     "price": 500,
