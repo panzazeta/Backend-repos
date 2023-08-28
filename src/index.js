@@ -71,9 +71,16 @@ io.on("connection", (socket) => {
     console.log("Server Socket.io connected");
 
     socket.on('nuevoProducto', async (nuevoProd) => {
-        console.log(nuevoProd);
         const { title, description, price, thumbnail, code, stock } = nuevoProd;
-        productsManager.addProduct(title, description, price, thumbnail, code, stock);
+        const product = {
+            title: title,
+            description: description,
+            price: price,
+            thumbnail: thumbnail,
+            code: code,
+            stock: stock
+        };
+        productsManager.addProduct(product);
         const products = await productsManager.getProducts();
         socket.emit('products-data', products);
     });
