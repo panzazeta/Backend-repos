@@ -6,21 +6,26 @@ export default class ProductManager {
         this.path = filePath;
     }
 
-    async addProduct(product) {
-        if (!product.title || !product.description || !product.price 
-            || !product.thumbnail || !product.code || !product.stock) {
-            console.log("Please fill out all the required fields");
-            return;
-        }
-      const prod =  this.products.find(prod => prod.code === product.code)
-        if (prod) {
-            console.log("The product is already in use")
-        } else {
-            this.products.push(product);
-            await fs.writeFile(this.path, JSON.stringify(this.products, null, 2));
-            return product;
-        }
+ async addProduct(product) {
+    if (!product.title || !product.description || !product.price 
+        || !product.thumbnail || !product.code || !product.stock) {
+        console.log("Please fill out all the required fields");
+        return;
     }
+    const products = await this.getProducts(); 
+    const maxId = products.reduce((max, prod) => Math.max(max, prod.id), 0); 
+    product.id = maxId + 1;
+
+    const existingProduct = products.find(prod => prod.code === product.code);
+    if (existingProduct) {
+        console.log("The product is already in use");
+    } else {
+        products.push(product); 
+        await fs.writeFile(this.path, JSON.stringify(products, null, 2)); 
+        return product;
+    }
+}
+
 
     async getProducts() {
         try {

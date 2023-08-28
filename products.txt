@@ -89,7 +89,7 @@
     "stock": 26,
     "id": 13
   },
-   {
+  {
     "title": "adfasdfasdf",
     "description": "Este es un producto prueba 2",
     "price": 300,
@@ -97,5 +97,14 @@
     "code": "adsfasddfasfdasafs3b",
     "stock": 26,
     "id": 14
+  },
+  {
+    "title": "Producto de prueba",
+    "description": "Descripción del producto",
+    "price": 100,
+    "thumbnail": "imagen.jpg",
+    "code": "abc1223234233",
+    "stock": 10,
+    "id": 15
   }
 ]

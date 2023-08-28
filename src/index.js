@@ -12,6 +12,35 @@ const app = express();
 const PORT = 8080;
 const productsManager = new ProductManager("./products.txt");
 
+// const newprod = async () => {
+//     try {
+//         const product = {
+//             title: "Producto de prueba",
+//             description: "Descripción del producto",
+//             price: 100,
+//             thumbnail: "imagen.jpg",
+//             code: "abc1223234233",
+//             stock: 10
+//         };
+
+//         const result = await productsManager.addProduct(product);
+//         console.log(result);
+//     } catch (error) {
+//         console.error("Error adding product:", error);
+//     }
+// };
+
+// newprod(); //METODO ADDPRODUCT FUNCIONA PARA CARGA MANUAL
+
+// (async () => {
+//     try {
+//         const products = await productsManager.getProducts();
+//         console.log(products);
+//     } catch (error) {
+//         console.error("Error getting products:", error);
+//     }
+// })(); //MÉTODO GETPRODUCTS OK
+
 //Config
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -33,21 +62,20 @@ app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", path.resolve(__dirname, "./views"));
 app.use("/static", express.static(path.join(__dirname, "/public")));
-app.use('/realtimeproducts', express.static(path.join(__dirname, '/public')));
 const upload = multer({storage: storage});
 
 //Server Socket.io
-const io = new Server(serverExpress)
-const prods = [];
+const io = new Server(serverExpress);
 
 io.on("connection", (socket) => {
     console.log("Server Socket.io connected");
 
     socket.on('nuevoProducto', async (nuevoProd) => {
+        console.log(nuevoProd);
         const { title, description, price, thumbnail, code, stock } = nuevoProd;
         productsManager.addProduct(title, description, price, thumbnail, code, stock);
         const products = await productsManager.getProducts();
-        io.emit('products-data', products);
+        socket.emit('products-data', products);
     });
 });
 
