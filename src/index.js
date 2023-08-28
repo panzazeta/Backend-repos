@@ -80,9 +80,9 @@ io.on("connection", (socket) => {
             code: code,
             stock: stock
         };
-        productsManager.addProduct(product);
-        const products = await productsManager.getProducts();
-        socket.emit('products-data', products);
+        await productsManager.addProduct(product);
+        const updatedProducts = await productsManager.getProducts();
+        socket.emit('products-data', updatedProducts);
     });
 });
 

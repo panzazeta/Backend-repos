@@ -133,5 +133,23 @@
     "code": "2342343244",
     "stock": "324",
     "id": 18
+  },
+  {
+    "title": "TEST",
+    "description": "PRUEBA123",
+    "price": "11",
+    "thumbnail": "asls",
+    "code": "fflakdfl32423",
+    "stock": "12",
+    "id": 19
+  },
+  {
+    "title": "TEST",
+    "description": "TESTPRUEBA",
+    "price": "32423",
+    "thumbnail": "SIN IMAGEN",
+    "code": "ASDFDS234",
+    "stock": "21",
+    "id": 20
   }
 ]
